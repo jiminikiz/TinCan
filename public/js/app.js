@@ -25,8 +25,7 @@ angular.module('TinCan')
 //         })
         .state('create', {
             url         : '/create',
-            templateUrl : '/views/create.html',
-            controller  : 'NewTangleController as ntCtrl'
+            templateUrl : '/views/create.html'
         })
 //
 //         $urlRouterProvider.otherwise('/')

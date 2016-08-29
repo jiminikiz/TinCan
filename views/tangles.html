@@ -1,51 +1,33 @@
 <!DOCTYPE html>
 <html ng-app="TinCan">
+    <head>
+        <title>TinCan</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/tangles.css">
 
-<head>
-    <title>TinCan</title>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/tangles.css">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.1/angular-ui-router.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-animate.min.js"></script>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.1/angular-ui-router.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-animate.min.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/tangles-controller.js"></script>
+    </head>
+    <body ng-controller="TanglesController as tangleCtrl" class="container">
+        <a ui-sref="create" class="btn">entangle</a>
 
-    <script src="js/app.js"></script>
-    <script src="js/tangles-controller.js"></script>
-    <!-- <script src="js/geolocate-factory.js"></script> -->
-    <script src="js/new-tangles-controller.js"></script>
-    <script src="js/new-tangle-factory.js"></script>
-</head>
+        <ui-view></ui-view>
 
-<body ng-controller="TanglesController as tangleCtrl" class="container">
-    <a ui-sref="create" class="btn">entangle</a>
-    <ui-view></ui-view>
-    <!-- <main class="l-one-whole">
-        <section class="container">
-            <article class="l-one-whole">
+        <div class="jumbotron">
+            <h1> Tangles! </h1>
+            <p>Tanlge all the things!</p>
+            <a href="/logout" class="btn btn-lg btn-danger">Logout</a>
+        </div>
 
-                <div ui-view class="slide"></div>
-
-            </article>
+        <section id="tangles">
+            <p ng-repeat="data in tangleCtrl.tangleList">{{ data }}</p>
         </section>
-    </main> -->
-
-    <div class="jumbotron">
-        <h1> ! </h1>
-
-        <p ng-repeat="coords in tangleCtrl.testcoords">
-            <h3>{{ coords }}</h3>
-            <!-- {{ coords }} -->
-        </p>
-
-        <p>
-            <a href="#" class="btn">entangle</a>
-        </p>
-        <a href="/logout" class="btn btn-lg btn-danger">Logout</a>
-    </div>
-</body>
-
+    </body>
 </html>

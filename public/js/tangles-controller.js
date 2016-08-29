@@ -1,86 +1,40 @@
 var socket = io();
 
 angular.module('TinCan')
-    .controller('TanglesController', ['$scope', '$window', tangleCtrl])
+    .controller('TanglesController', tangleCtrl)
 
-// tangles.$inject = ['$scope', 'getLocation'];
+function tangleCtrl($scope) {
+    var tangleCtrl = this;
 
-function tangleCtrl($scope, $window) {
-// , getLocation
-    var tCtrl = this;
-
-    tCtrl.testcoords = {
-        lat: 0,
-        lon: 0
-    };
-
-    socket.on('coords', function(data){
-            console.log('? ', data)
-            // chat.messageHistory.push(data)
-            // $scope.$apply()
-        })
+    tangleCtrl.tangleList = [];
 
     function geo_success(position) {
-        tCtrl.lat = position.coords.latitude;
-        tCtrl.lon = position.coords.longitude;
-        tCtrl.testcoords.lat = tCtrl.lat;
-        tCtrl.testcoords.lon = tCtrl.lon;
-        socket.emit('coords', tCtrl.testcoords);
-        //  $scope.$apply();
-        // location_callback(userInfo);
-        // resendLocation();
+        tangleCtrl.position = position;
+        $scope.$apply();
     }
 
     function geo_error() {
         console.log('error');
-        // error_callback();
     }
 
-    // var resendLocationTimeout = null;
-    // function resendLocation(){
-    //     socket.emit('location', userInfo);
-    //     clearTimeout(sendLocationTimeout);
-    //     sendLocationTimeout = setTimeout(sendLocation, 1000*5);
-    // }
-
     var geo_options = { enableHighAccuracy: true };
-    $window.navigator.geolocation.watchPosition(geo_success, geo_error, geo_options);
-    // navigator.geolocation.getCurrentPosition(geo_success, geo_error, geo_options);
 
+    window.navigator.geolocation.watchPosition( geo_success, geo_error, geo_options );
 
+    socket.on('saveCoordinatesSuccess', function(data) {
+        tangleCtrl.tangleList.push(data);
+        $scope.$apply();
+    });
 
+    tangleCtrl.submitTangle = function() {
+        console.log(tangleCtrl);
 
-
-
-
-
-    // tCtrl.currentP = getLocation;
-
-    // getLocation.then( function(data){
-    //     tCtrl.coords = {}
-    //     tCtrl.coords.lat = data.lat
-    //     tCtrl.coords.lon = data.lon
-    //     // tCtrl.coords.lat = getLocation.$$state.value.lat
-    //     // tCtrl.coords.lon = getLocation.$$state.value.lon
-    //     // tCtrl.time = getLocation.$$state.value.time
-    //     // tCtrl.cpos = data;
-    //     // $scope.$apply()
-    //     // setTimeout($scope.$apply.bind($scope), 0)
-    //     console.log(tCtrl.coords.lat)
-    //     console.log(tCtrl.coords.lon)
-    //     console.log(tCtrl.coords)
-    //
-    //     // return tCtrl.coords;
-    //
-    //     //\\//\\//\\// center map in map view, detect if in pin range
-    // }).then( function(){
-    //
-    //     console.log(tCtrl.coords)
-    //
-    //     tCtrl.testcoords.push(tCtrl.coords);
-        // $scope.$apply();
-        // console.log(data, 'this is our socket running');
-        //
-        // socket.emit('coords', data);
-    // });
+        socket.emit('saveCoordinates', {
+            title : tangleCtrl.title,
+            location : [
+                tangleCtrl.position.coords.latitude,
+                tangleCtrl.position.coords.longitude
+            ]
+        });
+    }
 };
